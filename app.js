@@ -45,7 +45,6 @@ io.on('connection', function(socket) {
                 if (err) throw err;
                 obj = JSON.parse(data);
                 for(var item of obj) {
-                    console.log(item.name);
                     let job = backlog.createJob({name: item.name, sfID: item.sfID, showPageID: item.showPageID});
                     job.save();
                     job.on('succeeded', (result) => {
@@ -57,29 +56,28 @@ io.on('connection', function(socket) {
                         console.log(`Job ${job.id} failed with error ${err.message}`);
                     });
                 }
-
             });
-
-
-
-
         });
     });
 });
 
-backlog.process(async function (job, done) {
+backlog.process(function (job, done) {
     console.log(`Processing job ${job.id}`);
 
-    //let account = await jsCon.sobject('Account').retrieve(job.data.sfID);
-    //console.log(`Name: ${account.Name}`)
-
     let url = "https://intellum.exceedlms.com/accounts/show/" + job.data.showPageID;
-    let ret = await jsCon.sobject("Account").update({
+    jsCon.sobject("Account").update({
         Id: job.data.sfID,
         Show_Page__c : url
-    })
-
-    return done(null, job.data.name);
+    }).then(function(res) {
+        console.log(res);
+        if (res.success == true) {
+            return done(null, job.data.name);
+        } else {
+            return done("error");
+        }
+    }, function(err) {
+        return done(err);
+    });
 });
 
 app.listen(3000);

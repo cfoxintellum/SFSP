@@ -26,7 +26,15 @@
       var socket = io();
 
       socket.on('account', function(data) {
-      let str = "<tr><td>" + data.name + "</td><td>" + data.status + "</td></tr>";
+
+      let highlight = "";
+      if (data.status !== "OK") {
+        highlight = 'class="table-danger"';
+      } else {
+        highlight = 'class="table-success"';
+      }
+
+      let str = "<tr " + highlight +" ><td>" + data.name + "</td><td>" + data.status + "</td></tr>";
         $( "#table tbody" ).append(str);
                 
         console.log(str);
