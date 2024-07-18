@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="Show Page(s)" icon-name="custom:custom68">
+        <div class="slds-var-m-around_medium">
+            <template iterator:it={showPageData}>
+                <p key={it.value.showPageID}><a href='{it.value.showURL}' target="_blank">{it.value.name}</a></p>
+            </template>
+        </div>
+
+        
+    </lightning-card>
+</template> 
