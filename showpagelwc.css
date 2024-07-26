@@ -1,0 +1,23 @@
+.show-container {
+    background: white;
+}
+
+.info-row {
+    display: flex;
+}
+
+.info-row .info-section {
+    width: 50%;
+}
+
+.notes-row {
+    margin-top: 10px;
+}
+
+.notes-row h4 {
+    font-weight: 600;
+}
+
+.account-info-mini {
+    padding: 6px;
+}
