@@ -3,18 +3,20 @@ import { getRecord } from "lightning/uiRecordApi";
 import {CurrentPageReference} from 'lightning/navigation';
 import jsonData from '@salesforce/resourceUrl/showpagejson';
 import findIsValid from '@salesforce/apex/ShowPageController.findContact';
-//import getNotes from '@salesforce/apex/ShowPageController.findNotes';
+import getNotes from '@salesforce/apex/ShowPageController.findNotes';
 
 const FIELDS = ["Case.AccountId", "Case.ContactEmail"];
  
 export default class LoadShow extends LightningElement {
   case;
   validEmail = false;
-  //accountNotes = "";
+  accountNotes = "None";
   accountID;
   @track recidd;
   jsonToShow;
   showPageData;
+  relationshipTypes;
+  relationshipLoaded = false;
 
 
   dataLoaded = false;
@@ -48,6 +50,7 @@ export default class LoadShow extends LightningElement {
       console.log(this.email);
       
       let arry = [];
+
       for(var item of this.jsonToShow) {
         if (item.sfID == this.accountID) {
             let obj = {};
@@ -58,30 +61,42 @@ export default class LoadShow extends LightningElement {
             arry.push(obj);
         }
     }
+
     this.showPageData = arry;
     this.dataLoaded = true;
 
     if (this.email != null) {
       findIsValid({ searchKey: this.email })
       .then((result) => {
-        if (result.length == 1) {
+        if (result[0].Support_Contact__c != undefined) {
           this.validEmail = result[0].Support_Contact__c;
         }
+        if (result[0].Relationship__c != undefined) {
+          let str = result[0].Relationship__c;
+          if (str.includes(";")) {
+            this.relationshipTypes = str.split(";")
+          } else {
+            this.relationshipTypes = [str];
+          }
+        } else {
+          this.relationshipTypes = ["None"];
+        }
+        this.relationshipLoaded = true;
       })
       .catch((error) => {
           console.log('erro status -' + error);
       });
     }
-    /*
+    
     getNotes({ searchKey: this.accountID })
     .then((result) => {
-      if (result.length == 1) {
+      if (result[0].Notes__c != undefined) {
         this.accountNotes = result[0].Notes__c;
       }
     })
     .catch((error) => {
         console.log('erro status -' + error);
-    });*/
+    });
 
 
 
