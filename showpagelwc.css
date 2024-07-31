@@ -21,3 +21,30 @@
 .account-info-mini {
     padding: 6px;
 }
+
+.title {
+    font-weight: 500;
+}
+
+.rel-types li {
+    list-style: disc;
+    list-style-position: inside;
+}
+
+.info-section .item {
+    margin-top: 10px;
+}
+
+.info-section:nth-of-type(2) {
+    padding-left: 15px;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-left-color: #bababa;
+}
+
+.notes-row {
+    border-top-style: solid;
+    border-top-color: #cacaca;
+    border-top-width: 1px;
+    padding-top: 10px;
+}
