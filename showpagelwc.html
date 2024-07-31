@@ -15,15 +15,32 @@
                 <div class="info-row">
                     <template lwc:if={dataLoaded}>
                         <div class="info-section">
-                            <p>Show Page(s)</p>
+                            <p class="title">Show Page(s)</p>
                             <template iterator:it={showPageData}>
                                 <p key={it.value.showPageID}><a href='{it.value.showURL}' target="_blank">[{it.value.cluster}] {it.value.name}</a></p>
                             </template>
                         </div>
                         <div class="info-section">
-                            <lightning-input type="checkbox" label="Support Contact" name="input1" checked={validEmail} disabled></lightning-input>
+                            <p class="title">Contact Info</p>
+
+                            <lightning-input class="item" type="checkbox" label="Support Contact" name="input1" checked={validEmail} disabled></lightning-input>
+                            
+                            <p class="item">Relationship Types:</p>
+                            <template lwc:if={relationshipLoaded}>
+                                <div class="rel-types">
+                                    <ul>
+                                        <template iterator:it={relationshipTypes}>
+                                            <li key={it.value}>{it.value}</li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </template>
                         </div>
                     </template>
+                </div>
+                <div class="notes-row">
+                    <p class="title">Notes</p>
+                    <p>{accountNotes}</p>
                 </div>
             </slot>
         </div>
